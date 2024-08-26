@@ -19,31 +19,33 @@ export default function Form() {
   });
 
   const fileValidation = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log("File \\\\", e.target.files);
-    if (e.target.files) {
-      if (e.target.files[0].size < 10000) setFileName(e.target.files[0].name);
-      else {
-        setMessage({
-          ...message,
-          content: "The size of the file is too large!",
-          showMessage: true,
-        });
-      }
-      if (
-        !["image/webp", "image/jpeg", "image/png"].find(
-          (element) => element === e.target.files[0].type
-        )
-      ) {
-        setMessage({
-          ...message,
-          content: "This is not an image file",
-          showMessage: true,
-        });
-      }
-    } else {
+    if (!e.target.files || e.target.files.length === 0) {
       setMessage({
         ...message,
         content: "There is no selected file",
+        showMessage: true,
+      });
+      return;
+    }
+
+    if (e.target.files[0].size < 10000) setFileName(e.target.files[0].name);
+    else {
+      setMessage({
+        ...message,
+        content: "The size of the file is too large!",
+        showMessage: true,
+      });
+    }
+    const file = e.target.files[0];
+
+    if (
+      !["image/webp", "image/jpeg", "image/png"].find(
+        (element) => element === file.type
+      )
+    ) {
+      setMessage({
+        ...message,
+        content: "This is not an image file",
         showMessage: true,
       });
     }
