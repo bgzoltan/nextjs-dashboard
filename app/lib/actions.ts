@@ -117,9 +117,9 @@ export async function createCustomer(formData: FormData) {
   try {
     if (!formData.get("name") || !formData.get("email") || file.size === 0)
       throw new Error(`Please fill in all fields and select an image!`);
-  } catch (err) {
+  } catch (error) {
     // Return an error to the client side
-    return { error: err.message };
+    if (error instanceof Error) return { error: error.message };
   }
 
   const { name, email } = CreateCustomer.parse({
@@ -135,9 +135,9 @@ export async function createCustomer(formData: FormData) {
       throw new Error(
         `The ${name} or the ${email} is already in the database!`
       );
-  } catch (err) {
+  } catch (error) {
     // Return an error to the client side
-    return { error: err.message };
+    if (error instanceof Error) return { error: error.message };
   }
 
   const image_url = await saveFile(file);
