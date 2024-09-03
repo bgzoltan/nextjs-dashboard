@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Customer } from "@/app/lib/definitions";
+import Link from "next/link";
 
 export default async function CustomersTable({
   customers,
@@ -55,7 +56,7 @@ export default async function CustomersTable({
                 <tbody className="divide-y divide-gray-200 text-gray-900">
                   {customers.map((customer) => (
                     <tr key={customer.id} className="group">
-                      <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
+                      <td className="whitespace-nowrap bg-white py-3 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
                         <div className="flex items-center gap-3">
                           <Image
                             src={customer.image_url}
@@ -67,8 +68,10 @@ export default async function CustomersTable({
                           <p>{customer.name}</p>
                         </div>
                       </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.email}
+                      <td className="whitespace-nowrap bg-white text-blue-400 underline px-4 py-5 text-sm">
+                        <Link href={`mailto:${customer.email}`}>
+                          {customer.email}
+                        </Link>
                       </td>
                     </tr>
                   ))}
