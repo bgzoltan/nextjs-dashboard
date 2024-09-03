@@ -87,11 +87,11 @@ export type InvoiceForm = {
   status: "pending" | "paid";
 };
 
-export type Severity = "critical" | "significant" | "minor";
+export type Type = "critical error" | "error" | "user info";
 
 export interface Message {
-  isError: boolean;
-  severity: Severity | "";
+  type: Type | "";
   content: string;
   showMessage: boolean;
+  redirect: string;
 }

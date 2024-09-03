@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Message } from "../lib/definitions";
 
 interface ShowMessageProp {
@@ -10,16 +9,34 @@ export default function ShowMessage({
   message,
   handleMessageClick,
 }: ShowMessageProp) {
+  let bgColor = "black";
+
+  switch (message.type) {
+    case "user info":
+      bgColor = "mediumseagreen";
+      break;
+    case "critical error":
+      bgColor = "tomato";
+      break;
+    case "error":
+      bgColor = "orange";
+      break;
+    default:
+      bgColor = "violet";
+  }
+
   return (
     <>
       {message.showMessage && (
         <div className="fixed left-0 top-0 flex w-screen h-screen justify-center items-center">
-          <div className="flex justify-center items-center h-[100px] w-auto bg-pink-700 text-orange-100 p-3 rounded border-pink-700">
-            <div className=" bg-pink-700 text-orange-100 rounded border-pink-700 p-2">
-              {message?.content}
-            </div>
+          <div
+            className="flex flex-col justify-center items-center min-w-52 p-2 rounded text-white"
+            style={{ backgroundColor: bgColor }}
+          >
+            <p className="p-1">{message.type.toUpperCase()}</p>
+            <p className="p-1">{message?.content}</p>
             <button
-              className=" bg-pink-400 text-orange-100 rounded border-pink-700 p-2"
+              className="w-24 bg-gray-400 text-white rounded p-1"
               onClick={handleMessageClick}
             >
               OK

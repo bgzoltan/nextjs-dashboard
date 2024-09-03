@@ -20,7 +20,6 @@ export default async function Page({
     page?: string;
   };
 }) {
-  console.log("searchParams", searchParams);
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
   const customers = await fetchAllCustomers(query);

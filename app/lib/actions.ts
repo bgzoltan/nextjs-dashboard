@@ -151,11 +151,9 @@ export async function createCustomer(formData: FormData) {
   } catch (error) {
     throw new Error("There is a problem creating a customer");
   }
-
   // Once the database has been updated, the /dashboard/invoices path will be revalidated (cache will be deleted), and fresh data will be fetched from the server (a new request will be send).
   revalidatePath("/dashboard/customers");
-  // We redirect the user to the invoices page
-  redirect("/dashboard/customers");
+  return;
 }
 
 interface UploadResult {

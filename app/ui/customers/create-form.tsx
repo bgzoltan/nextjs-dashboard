@@ -4,25 +4,29 @@ import Link from "next/link";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/button";
 import { createCustomer } from "@/app/lib/actions";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import ShowMessage from "../show-message";
 import { Message } from "@/app/lib/definitions";
+import { useRouter } from "next/navigation";
 
 export default function Form() {
   const [fileName, setFileName] = useState("There is no selected file.");
   const [message, setMessage] = useState<Message>({
-    isError: false,
     content: "",
-    severity: "",
+    type: "",
     showMessage: false,
+    redirect: "",
   });
+
+  const router = useRouter();
 
   const fileValidation = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) {
       setMessage({
         ...message,
         content: "There is no selected file",
+        type: "user info",
         showMessage: true,
       });
       return;
@@ -33,6 +37,7 @@ export default function Form() {
       setMessage({
         ...message,
         content: "The size of the file is too large!",
+        type: "error",
         showMessage: true,
       });
     }
@@ -46,6 +51,7 @@ export default function Form() {
       setMessage({
         ...message,
         content: "This is not an image file",
+        type: "error",
         showMessage: true,
       });
     }
@@ -55,25 +61,33 @@ export default function Form() {
     const newMessage: Message | null = {
       ...message,
       showMessage: false,
+      redirect: "",
     };
     setFileName("Theres is no selected file.");
     setMessage(newMessage);
+    if (message.redirect !== "") {
+      router.push(message.redirect);
+    }
   };
 
   async function onSubmit(formData: FormData) {
     const result = await createCustomer(formData);
 
-    if (result.error) {
+    if (!result) {
       setMessage({
         ...message,
-        isError: true,
+        content: "Form submitted successfully",
+        type: "user info",
+        showMessage: true,
+        redirect: "/dashboard/customers",
+      });
+    } else if (result.error) {
+      setMessage({
+        ...message,
         content: result.error,
-        severity: "critical",
+        type: "critical error",
         showMessage: true,
       });
-    } else {
-      // Handle success, e.g., redirect or clear form
-      console.log("Form submitted successfully");
     }
   }
 

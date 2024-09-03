@@ -15,12 +15,9 @@ export async function fetchRevenue() {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
 
-    console.log("Fetching revenue data...");
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
-
-    console.log("Data fetch completed after 3 seconds.");
 
     return data.rows;
   } catch (error) {
@@ -153,7 +150,6 @@ export async function fetchInvoiceById(id: string) {
       WHERE invoices.id = ${id};
     `;
 
-    console.log("id Select...", data.rows);
     const invoice = data.rows.map((invoice) => ({
       ...invoice,
       // Convert amount from cents to dollars
@@ -178,7 +174,6 @@ export async function fetchCustomers() {
     `;
 
     const customers = data.rows;
-    console.log(customers);
     return customers;
   } catch (err) {
     console.error("Database Error:", err);
@@ -188,7 +183,6 @@ export async function fetchCustomers() {
 
 export async function fetchAllCustomers(query: string) {
   try {
-    console.log("Query =====", query);
     const data = await sql<Customer>`
       SELECT
         id,
