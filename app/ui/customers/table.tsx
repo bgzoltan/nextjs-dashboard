@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Customer } from "@/app/lib/definitions";
 import Link from "next/link";
+import { DeleteCustomer } from "./buttons";
 
 export default async function CustomersTable({
   customers,
@@ -72,6 +73,11 @@ export default async function CustomersTable({
                         <Link href={`mailto:${customer.email}`}>
                           {customer.email}
                         </Link>
+                      </td>
+                      <td className="whitespace-nowrap  bg-white py-3 pl-6 pr-3">
+                        <div className="flex justify-end gap-3">
+                          <DeleteCustomer id={customer.id} />
+                        </div>
                       </td>
                     </tr>
                   ))}

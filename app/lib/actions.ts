@@ -156,6 +156,16 @@ export async function createCustomer(formData: FormData) {
   return;
 }
 
+export async function deleteCustomer(id: string) {
+  try {
+    await sql`DELETE FROM customers WHERE id = ${id}`;
+  } catch (error) {
+    throw new Error("There is a problem deleting a customer");
+  }
+
+  revalidatePath("/dashboard/customers");
+}
+
 interface UploadResult {
   url: string;
 }
